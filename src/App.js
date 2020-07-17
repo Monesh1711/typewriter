@@ -10,6 +10,7 @@ const initialState = {
   sec: 0,
   started: false,
   finished: false,
+  errorWords: 0,
 };
 export class App extends Component {
   state = initialState;
@@ -26,6 +27,7 @@ export class App extends Component {
     this.setState({
       userInput: value,
       symbols: this.countCorrectSymbols(value),
+      errorWords,
     });
   };
 
@@ -42,7 +44,6 @@ export class App extends Component {
       }
     });
     let errorWords = word1.length - count - 1;
-    console.log(errorWords);
     return errorWords;
   };
   setTimer = () => {
@@ -82,6 +83,7 @@ export class App extends Component {
           placeholder="Start Typing"
         ></textarea>
         <span>{this.state.sec}</span>
+        <span>{this.state.errorWords}</span>
         <Speed symbols={this.state.symbols} sec={this.state.sec} />
         <button onClick={this.onRestart}>Restart</button>
       </div>
