@@ -22,12 +22,29 @@ export class App extends Component {
     const value = e.target.value;
     this.setTimer();
     this.onFinish(value);
+    let errorWords = this.compareWords(this.state.text, value);
     this.setState({
       userInput: value,
       symbols: this.countCorrectSymbols(value),
     });
   };
 
+  compareWords = (userInput, originalText) => {
+    let word1 = originalText.split(" ");
+    let word2 = userInput.split(" ");
+    let count = 0;
+    word1.forEach(function (item, index) {
+      if (item == word2[index]) {
+        console.log(count);
+        console.log(item);
+        console.log(word2[index]);
+        count++;
+      }
+    });
+    let errorWords = word1.length - count - 1;
+    console.log(errorWords);
+    return errorWords;
+  };
   setTimer = () => {
     if (!this.state.started) {
       this.setState({ started: true });
@@ -61,9 +78,10 @@ export class App extends Component {
         <textarea
           value={this.state.userInput}
           onChange={this.onUserInputChange}
-          readOnly={this.state.finished}
+          readOnly={this.state.finished || this.state.sec > 60}
           placeholder="Start Typing"
         ></textarea>
+        <span>{this.state.sec}</span>
         <Speed symbols={this.state.symbols} sec={this.state.sec} />
         <button onClick={this.onRestart}>Restart</button>
       </div>
